@@ -1,6 +1,7 @@
 import "./globals.css";
 import { ReactNode } from "react";
 import Providers from "./Providers";
+import Navbar from "@/components/Navbar/Navbar";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -10,6 +11,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         style={{ fontFamily: 'Geist, ui-sans-serif, system-ui, sans-serif' }}
       >
         <Providers>
+          <Navbar />
           {children}
         </Providers>
       </body>
