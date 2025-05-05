@@ -1,10 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart3, Users, User } from "lucide-react";
+import TeamSearchBar from "@/components/TeamSearchBar";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <TeamSearchBar />
       <main className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold mb-8">NBA Betting Insights</h1>
         
