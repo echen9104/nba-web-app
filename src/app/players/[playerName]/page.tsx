@@ -1,13 +1,15 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BarChart3, Target, TrendingUp } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { BarChart3, Target, TrendingUp } from 'lucide-react';
 
 export default function PlayerPage({ params }: { params: { playerName: string } }) {
+  const { playerName } = params;
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold mb-8">Player Analysis</h1>
-        
+        <h1 className="text-4xl font-bold mb-4">{playerName}&apos;s Performance</h1>
+
         <Tabs defaultValue="stats" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="stats">
@@ -183,4 +185,4 @@ export default function PlayerPage({ params }: { params: { playerName: string } 
       </main>
     </div>
   );
-} 
+}

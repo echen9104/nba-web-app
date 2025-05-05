@@ -1,11 +1,12 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { nbaTeams } from "@/lib/nbaTeams";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { nbaTeams } from '@/lib/nbaTeams';
 
 export default function TeamSearchBar() {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
+  const [isFocused, setIsFocused] = useState(false);
   const router = useRouter();
 
   const filteredTeams = nbaTeams.filter(team =>
@@ -14,6 +15,8 @@ export default function TeamSearchBar() {
 
   const handleSelect = (teamId: number) => {
     router.push(`/teams/${teamId}`);
+    setQuery('');
+    setIsFocused(false);
   };
 
   return (
@@ -24,12 +27,12 @@ export default function TeamSearchBar() {
         placeholder="Search for a team..."
         value={query}
         onChange={e => setQuery(e.target.value)}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setTimeout(() => setIsFocused(false), 200)}
       />
-      {query && (
-        <ul className="bg-white dark:bg-gray-800 border rounded mt-2">
-          {filteredTeams.length === 0 && (
-            <li className="p-2 text-gray-500">No teams found</li>
-          )}
+      {isFocused && query && (
+        <ul className="absolute z-10 w-full max-w-md bg-white dark:bg-gray-800 border rounded mt-2 shadow-lg">
+          {filteredTeams.length === 0 && <li className="p-2 text-gray-500">No teams found</li>}
           {filteredTeams.map(team => (
             <li
               key={team.id}
@@ -43,4 +46,4 @@ export default function TeamSearchBar() {
       )}
     </div>
   );
-} 
+}

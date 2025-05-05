@@ -1,15 +1,18 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BarChart3, Users, User } from "lucide-react";
-import TeamSearchBar from "@/components/TeamSearchBar";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { BarChart3, Users, User } from 'lucide-react';
+import TeamSearchBar from '@/components/TeamSearchBar';
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <TeamSearchBar />
       <main className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold mb-8">NBA Betting Insights</h1>
-        
+        <h1 className="text-4xl font-bold mb-4">NBA Betting Insights</h1>
+        <p className="text-lg text-gray-300 mb-8">
+          Get expert analysis and predictions for NBA games. Find the best betting opportunities and make informed decisions.
+        </p>
+
         <Tabs defaultValue="today" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="today">

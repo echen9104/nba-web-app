@@ -1,21 +1,14 @@
 'use client';
 
-import { Home } from 'lucide-react';
 import Link from 'next/link';
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
+import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from '@/components/ui/navigation-menu';
+import { Home } from 'lucide-react';
+import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
 
 export default function Navbar() {
   return (
     <nav className="w-full border-b">
-      <div className="container flex h-16 items-center justify-between">
+      <div className="px-16 flex h-16 items-center justify-between">
         {/* Left side - Logo and Brand */}
         <div className="flex items-center gap-2">
           <Home className="h-6 w-6" />
@@ -28,39 +21,24 @@ export default function Navbar() {
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
-              <Link href="/" passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Home
-                </NavigationMenuLink>
-              </Link>
+              <NavigationMenuLink href="/players" className={navigationMenuTriggerStyle()}>
+                Players
+              </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link href="/players" passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Players
-                </NavigationMenuLink>
-              </Link>
+              <NavigationMenuLink href="/teams" className={navigationMenuTriggerStyle()}>
+                Teams
+              </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link href="/teams" passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Teams
-                </NavigationMenuLink>
-              </Link>
+              <NavigationMenuLink href="/login" className={navigationMenuTriggerStyle()}>
+                Log in
+              </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link href="/login" passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Log in
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link href="/signup" passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Sign up
-                </NavigationMenuLink>
-              </Link>
+              <NavigationMenuLink href="/signup" className={navigationMenuTriggerStyle()}>
+                Sign up
+              </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
