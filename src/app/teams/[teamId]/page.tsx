@@ -80,7 +80,7 @@ export default function TeamPage() {
           <TabsContent value="games" className="mt-6">
             <div className="grid gap-4">
               {games.length > 0 ? (
-                games.map((game) => (
+                games.map(game => (
                   <Card key={game.game_id}>
                     <CardHeader>
                       <CardTitle>
@@ -96,16 +96,29 @@ export default function TeamPage() {
                           Points: <b>{game.points}</b>
                         </div>
                         <div>
-                          FG: <b>{game.field_goals_made}/{game.field_goals_attempted}</b> ({game.field_goal_percentage.toFixed(3)})
+                          FG:{' '}
+                          <b>
+                            {game.field_goals_made}/{game.field_goals_attempted}
+                          </b>{' '}
+                          ({game.field_goal_percentage.toFixed(3)})
                         </div>
                         <div>
-                          3PT: <b>{game.three_pointers_made}/{game.three_pointers_attempted}</b> ({game.three_point_percentage.toFixed(3)})
+                          3PT:{' '}
+                          <b>
+                            {game.three_pointers_made}/{game.three_pointers_attempted}
+                          </b>{' '}
+                          ({game.three_point_percentage.toFixed(3)})
                         </div>
                         <div>
-                          FT: <b>{game.free_throws_made}/{game.free_throws_attempted}</b> ({game.free_throw_percentage.toFixed(3)})
+                          FT:{' '}
+                          <b>
+                            {game.free_throws_made}/{game.free_throws_attempted}
+                          </b>{' '}
+                          ({game.free_throw_percentage.toFixed(3)})
                         </div>
                         <div>
-                          Rebounds: <b>{game.total_rebounds}</b> (O: {game.offensive_rebounds}, D: {game.defensive_rebounds})
+                          Rebounds: <b>{game.total_rebounds}</b> (O: {game.offensive_rebounds}, D:{' '}
+                          {game.defensive_rebounds})
                         </div>
                         <div>
                           Assists: <b>{game.assists}</b>

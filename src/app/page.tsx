@@ -10,7 +10,8 @@ export default function Home() {
       <main className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold mb-4">NBA Betting Insights</h1>
         <p className="text-lg text-gray-300 mb-8">
-          Get expert analysis and predictions for NBA games. Find the best betting opportunities and make informed decisions.
+          Get expert analysis and predictions for NBA games. Find the best betting opportunities and
+          make informed decisions.
         </p>
 
         <Tabs defaultValue="today" className="w-full">

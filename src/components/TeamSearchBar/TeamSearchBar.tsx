@@ -24,12 +24,12 @@ export default function TeamSearchBar() {
         type="text"
         placeholder="Search for a team..."
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onChange={e => setSearchTerm(e.target.value)}
         className="w-full"
       />
       {searchTerm && filteredTeams.length > 0 && (
         <div className="absolute z-10 w-full mt-1 bg-background border rounded-md shadow-lg">
-          {filteredTeams.map((team) => (
+          {filteredTeams.map(team => (
             <button
               key={team.id}
               onClick={() => handleTeamSelect(team.id)}
@@ -42,4 +42,4 @@ export default function TeamSearchBar() {
       )}
     </div>
   );
-} 
+}
