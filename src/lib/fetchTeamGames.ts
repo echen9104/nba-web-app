@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-export async function fetchTeamGames(teamId: number, season?: string) {
+export async function fetchTeamGames(teamId: number, season?: string, seasonType?: string) {
   const params = season ? `?season=${season}` : '';
-  const url = `http://localhost:4000/teams/${teamId}/games${params}`;
+  const url = `http://localhost:4000/teams/${teamId}/games${params}${seasonType ? `&season_type=${seasonType}` : ''}`;
   console.log('Fetching games from URL:', url);
 
   try {
