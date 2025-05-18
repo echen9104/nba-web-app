@@ -6,6 +6,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BarChart3 } from 'lucide-react';
 import { fetchTeamGames } from '@/lib/fetchTeamGames';
 import { getTeamLogo } from '@/lib/teamLogos';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 interface TeamGame {
   game_id: string;
@@ -42,6 +50,62 @@ interface TeamGamesResponse {
   games: TeamGame[];
 }
 
+interface StatSummary {
+  points: number;
+  fieldGoalPercentage: number;
+  threePointPercentage: number;
+  freeThrowPercentage: number;
+  rebounds: number;
+  assists: number;
+  turnovers: number;
+  plusMinus: number;
+}
+
+const calculateStats = (games: TeamGame[], count: number): StatSummary => {
+  const recentGames = games.slice(0, count);
+  if (recentGames.length === 0) return {
+    points: 0,
+    fieldGoalPercentage: 0,
+    threePointPercentage: 0,
+    freeThrowPercentage: 0,
+    rebounds: 0,
+    assists: 0,
+    turnovers: 0,
+    plusMinus: 0
+  };
+
+  const totals = recentGames.reduce((acc, game) => ({
+    points: acc.points + game.points,
+    fieldGoalPercentage: acc.fieldGoalPercentage + game.field_goal_percentage,
+    threePointPercentage: acc.threePointPercentage + game.three_point_percentage,
+    freeThrowPercentage: acc.freeThrowPercentage + game.free_throw_percentage,
+    rebounds: acc.rebounds + game.total_rebounds,
+    assists: acc.assists + game.assists,
+    turnovers: acc.turnovers + game.turnovers,
+    plusMinus: acc.plusMinus + game.plus_minus
+  }), {
+    points: 0,
+    fieldGoalPercentage: 0,
+    threePointPercentage: 0,
+    freeThrowPercentage: 0,
+    rebounds: 0,
+    assists: 0,
+    turnovers: 0,
+    plusMinus: 0
+  });
+
+  return {
+    points: Number((totals.points / recentGames.length).toFixed(1)),
+    fieldGoalPercentage: Number((totals.fieldGoalPercentage / recentGames.length).toFixed(3)),
+    threePointPercentage: Number((totals.threePointPercentage / recentGames.length).toFixed(3)),
+    freeThrowPercentage: Number((totals.freeThrowPercentage / recentGames.length).toFixed(3)),
+    rebounds: Number((totals.rebounds / recentGames.length).toFixed(1)),
+    assists: Number((totals.assists / recentGames.length).toFixed(1)),
+    turnovers: Number((totals.turnovers / recentGames.length).toFixed(1)),
+    plusMinus: Number((totals.plusMinus / recentGames.length).toFixed(1))
+  };
+};
+
 export default function TeamPage() {
   const params = useParams();
   const teamId = Number(params.teamId);
@@ -67,6 +131,8 @@ export default function TeamPage() {
 
   console.log('Data in component:', data);
   const games = data?.games || [];
+  const last5GamesStats = calculateStats(games, 5);
+  const last10GamesStats = calculateStats(games, 10);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -75,6 +141,100 @@ export default function TeamPage() {
           {TeamLogo && <TeamLogo size={60} />}
           <h1 className="text-4xl font-bold">Team Game Logs</h1>
         </div>
+
+        <div className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4">Team Stats</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Last 5 Games Average</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-gray-500">Points</p>
+                    <p className="text-2xl font-bold">{last5GamesStats.points}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">FG%</p>
+                    <p className="text-2xl font-bold">{last5GamesStats.fieldGoalPercentage}%</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">3PT%</p>
+                    <p className="text-2xl font-bold">{last5GamesStats.threePointPercentage}%</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">FT%</p>
+                    <p className="text-2xl font-bold">{last5GamesStats.freeThrowPercentage}%</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Rebounds</p>
+                    <p className="text-2xl font-bold">{last5GamesStats.rebounds}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Assists</p>
+                    <p className="text-2xl font-bold">{last5GamesStats.assists}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Turnovers</p>
+                    <p className="text-2xl font-bold">{last5GamesStats.turnovers}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">+/-</p>
+                    <p className={`text-2xl font-bold ${last5GamesStats.plusMinus >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                      {last5GamesStats.plusMinus > 0 ? `+${last5GamesStats.plusMinus}` : last5GamesStats.plusMinus}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Last 10 Games Average</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-gray-500">Points</p>
+                    <p className="text-2xl font-bold">{last10GamesStats.points}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">FG%</p>
+                    <p className="text-2xl font-bold">{last10GamesStats.fieldGoalPercentage}%</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">3PT%</p>
+                    <p className="text-2xl font-bold">{last10GamesStats.threePointPercentage}%</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">FT%</p>
+                    <p className="text-2xl font-bold">{last10GamesStats.freeThrowPercentage}%</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Rebounds</p>
+                    <p className="text-2xl font-bold">{last10GamesStats.rebounds}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Assists</p>
+                    <p className="text-2xl font-bold">{last10GamesStats.assists}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Turnovers</p>
+                    <p className="text-2xl font-bold">{last10GamesStats.turnovers}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">+/-</p>
+                    <p className={`text-2xl font-bold ${last10GamesStats.plusMinus >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                      {last10GamesStats.plusMinus > 0 ? `+${last10GamesStats.plusMinus}` : last10GamesStats.plusMinus}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
         <Tabs defaultValue="games" className="w-full">
           <TabsList className="grid w-full grid-cols-1">
             <TabsTrigger value="games">
@@ -83,78 +243,69 @@ export default function TeamPage() {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="games" className="mt-6">
-            <div className="grid gap-4">
-              {games.length > 0 ? (
-                games.map(game => {
-                  const [homeTeam, awayTeam] = game.matchup.split(' vs. ');
-                  const HomeTeamLogo = getTeamLogo(Number(homeTeam));
-                  const AwayTeamLogo = getTeamLogo(Number(awayTeam));
-                  
-                  return (
-                    <Card key={game.game_id}>
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-4">
-                            {homeTeam} {HomeTeamLogo && <HomeTeamLogo size={40} />}
-                            <span>vs</span>
-                            {awayTeam} {AwayTeamLogo && <AwayTeamLogo size={40} />}
-                          </div>
-                          <CardTitle>
-                            {new Date(game.game_date).toLocaleDateString()}
-                          </CardTitle>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex flex-wrap gap-4">
-                          <div>
-                            Result: <b>{game.result === 'W' ? 'Win' : 'Loss'}</b>
-                          </div>
-                          <div>
-                            Points: <b>{game.points}</b>
-                          </div>
-                          <div>
-                            FG:{' '}
-                            <b>
-                              {game.field_goals_made}/{game.field_goals_attempted}
-                            </b>{' '}
-                            ({game.field_goal_percentage.toFixed(3)})
-                          </div>
-                          <div>
-                            3PT:{' '}
-                            <b>
-                              {game.three_pointers_made}/{game.three_pointers_attempted}
-                            </b>{' '}
-                            ({game.three_point_percentage.toFixed(3)})
-                          </div>
-                          <div>
-                            FT:{' '}
-                            <b>
-                              {game.free_throws_made}/{game.free_throws_attempted}
-                            </b>{' '}
-                            ({game.free_throw_percentage.toFixed(3)})
-                          </div>
-                          <div>
-                            Rebounds: <b>{game.total_rebounds}</b> (O: {game.offensive_rebounds}, D:{' '}
-                            {game.defensive_rebounds})
-                          </div>
-                          <div>
-                            Assists: <b>{game.assists}</b>
-                          </div>
-                          <div>
-                            Turnovers: <b>{game.turnovers}</b>
-                          </div>
-                          <div>
-                            Plus/Minus: <b>{game.plus_minus}</b>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })
-              ) : (
-                <div className="text-center text-gray-500">No games found for this team.</div>
-              )}
-            </div>
+            {games.length > 0 ? (
+              <div className="rounded-md border">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Matchup</TableHead>
+                      <TableHead>Result</TableHead>
+                      <TableHead>PTS</TableHead>
+                      <TableHead>FG</TableHead>
+                      <TableHead>3PT</TableHead>
+                      <TableHead>FT</TableHead>
+                      <TableHead>REB</TableHead>
+                      <TableHead>AST</TableHead>
+                      <TableHead>TO</TableHead>
+                      <TableHead>+/-</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {games.map((game) => (
+                      <TableRow key={game.game_id}>
+                        <TableCell>{new Date(game.game_date).toLocaleDateString()}</TableCell>
+                        <TableCell>{game.matchup}</TableCell>
+                        <TableCell>
+                          <span className={`font-bold ${game.result === 'W' ? 'text-green-500' : 'text-red-500'}`}>
+                            {game.result}
+                          </span>
+                        </TableCell>
+                        <TableCell>{game.points}</TableCell>
+                        <TableCell>
+                          {game.field_goals_made}/{game.field_goals_attempted}
+                          <span className="text-sm text-gray-500 ml-1">
+                            ({game.field_goal_percentage.toFixed(1)}%)
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          {game.three_pointers_made}/{game.three_pointers_attempted}
+                          <span className="text-sm text-gray-500 ml-1">
+                            ({game.three_point_percentage.toFixed(1)}%)
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          {game.free_throws_made}/{game.free_throws_attempted}
+                          <span className="text-sm text-gray-500 ml-1">
+                            ({game.free_throw_percentage.toFixed(1)}%)
+                          </span>
+                        </TableCell>
+                        <TableCell>{game.total_rebounds}</TableCell>
+                        <TableCell>{game.assists}</TableCell>
+                        <TableCell>{game.turnovers}</TableCell>
+                        <TableCell>
+                          <span className={`font-bold ${game.plus_minus >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                            {game.plus_minus > 0 ? `+${game.plus_minus}` : game.plus_minus}
+                          </span>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            ) : (
+              <div className="text-center text-gray-500">No games found for this team.</div>
+            )}
           </TabsContent>
         </Tabs>
       </main>
