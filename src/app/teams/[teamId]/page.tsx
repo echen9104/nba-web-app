@@ -12,7 +12,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 import { TeamAverageStatsCard } from '@/components/TeamStats/TeamAverageStatsCard';
 
 interface TeamGame {
@@ -58,7 +58,7 @@ export default function TeamPage() {
   const { data, isLoading, error } = useQuery<TeamGamesResponse>({
     queryKey: ['teamGames', teamId],
     queryFn: async () => {
-      const response = await fetchTeamGames(teamId, "2024-25", "Regular Season,Playoffs");
+      const response = await fetchTeamGames(teamId, '2024-25', 'Regular Season,Playoffs');
       console.log('API Response:', response);
       return response;
     },
@@ -87,68 +87,72 @@ export default function TeamPage() {
         <TeamAverageStatsCard games={games} />
 
         {games.length > 0 ? (
-              <div className="rounded-md border">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Date</TableHead>
-                      <TableHead>Matchup</TableHead>
-                      <TableHead>Result</TableHead>
-                      <TableHead>PTS</TableHead>
-                      <TableHead>FG</TableHead>
-                      <TableHead>3PT</TableHead>
-                      <TableHead>FT</TableHead>
-                      <TableHead>REB</TableHead>
-                      <TableHead>AST</TableHead>
-                      <TableHead>TO</TableHead>
-                      <TableHead>+/-</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {games.map((game) => (
-                      <TableRow key={game.game_id}>
-                        <TableCell>{new Date(game.game_date).toLocaleDateString()}</TableCell>
-                        <TableCell>{game.matchup.replace('@', 'vs.')}</TableCell>
-                        <TableCell>
-                          <span className={`font-bold ${game.result === 'W' ? 'text-green-500' : 'text-red-500'}`}>
-                            {game.result}
-                          </span>
-                        </TableCell>
-                        <TableCell>{game.points}</TableCell>
-                        <TableCell>
-                          {game.field_goals_made}/{game.field_goals_attempted}
-                          <span className="text-sm text-gray-500 ml-1">
-                            ({game.field_goal_percentage.toFixed(1)}%)
-                          </span>
-                        </TableCell>
-                        <TableCell>
-                          {game.three_pointers_made}/{game.three_pointers_attempted}
-                          <span className="text-sm text-gray-500 ml-1">
-                            ({game.three_point_percentage.toFixed(1)}%)
-                          </span>
-                        </TableCell>
-                        <TableCell>
-                          {game.free_throws_made}/{game.free_throws_attempted}
-                          <span className="text-sm text-gray-500 ml-1">
-                            ({game.free_throw_percentage.toFixed(1)}%)
-                          </span>
-                        </TableCell>
-                        <TableCell>{game.total_rebounds}</TableCell>
-                        <TableCell>{game.assists}</TableCell>
-                        <TableCell>{game.turnovers}</TableCell>
-                        <TableCell>
-                          <span className={`font-bold ${game.plus_minus >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                            {game.plus_minus > 0 ? `+${game.plus_minus}` : game.plus_minus}
-                          </span>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            ) : (
-              <div className="text-center text-gray-500">No games found for this team.</div>
-            )}
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Matchup</TableHead>
+                  <TableHead>Result</TableHead>
+                  <TableHead>PTS</TableHead>
+                  <TableHead>FG</TableHead>
+                  <TableHead>3PT</TableHead>
+                  <TableHead>FT</TableHead>
+                  <TableHead>REB</TableHead>
+                  <TableHead>AST</TableHead>
+                  <TableHead>TO</TableHead>
+                  <TableHead>+/-</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {games.map(game => (
+                  <TableRow key={game.game_id}>
+                    <TableCell>{new Date(game.game_date).toLocaleDateString()}</TableCell>
+                    <TableCell>{game.matchup.replace('@', 'vs.')}</TableCell>
+                    <TableCell>
+                      <span
+                        className={`font-bold ${game.result === 'W' ? 'text-green-500' : 'text-red-500'}`}
+                      >
+                        {game.result}
+                      </span>
+                    </TableCell>
+                    <TableCell>{game.points}</TableCell>
+                    <TableCell>
+                      {game.field_goals_made}/{game.field_goals_attempted}
+                      <span className="text-sm text-gray-500 ml-1">
+                        ({game.field_goal_percentage.toFixed(1)}%)
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      {game.three_pointers_made}/{game.three_pointers_attempted}
+                      <span className="text-sm text-gray-500 ml-1">
+                        ({game.three_point_percentage.toFixed(1)}%)
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      {game.free_throws_made}/{game.free_throws_attempted}
+                      <span className="text-sm text-gray-500 ml-1">
+                        ({game.free_throw_percentage.toFixed(1)}%)
+                      </span>
+                    </TableCell>
+                    <TableCell>{game.total_rebounds}</TableCell>
+                    <TableCell>{game.assists}</TableCell>
+                    <TableCell>{game.turnovers}</TableCell>
+                    <TableCell>
+                      <span
+                        className={`font-bold ${game.plus_minus >= 0 ? 'text-green-500' : 'text-red-500'}`}
+                      >
+                        {game.plus_minus > 0 ? `+${game.plus_minus}` : game.plus_minus}
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        ) : (
+          <div className="text-center text-gray-500">No games found for this team.</div>
+        )}
       </main>
     </div>
   );

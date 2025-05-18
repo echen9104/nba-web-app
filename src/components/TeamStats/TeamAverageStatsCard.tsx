@@ -43,36 +43,40 @@ interface StatSummary {
 
 const calculateStats = (games: TeamGame[], count: number): StatSummary => {
   const recentGames = games.slice(0, count);
-  if (recentGames.length === 0) return {
-    points: 0,
-    fieldGoalPercentage: 0,
-    threePointPercentage: 0,
-    freeThrowPercentage: 0,
-    rebounds: 0,
-    assists: 0,
-    turnovers: 0,
-    plusMinus: 0
-  };
+  if (recentGames.length === 0)
+    return {
+      points: 0,
+      fieldGoalPercentage: 0,
+      threePointPercentage: 0,
+      freeThrowPercentage: 0,
+      rebounds: 0,
+      assists: 0,
+      turnovers: 0,
+      plusMinus: 0,
+    };
 
-  const totals = recentGames.reduce((acc, game) => ({
-    points: acc.points + game.points,
-    fieldGoalPercentage: acc.fieldGoalPercentage + game.field_goal_percentage,
-    threePointPercentage: acc.threePointPercentage + game.three_point_percentage,
-    freeThrowPercentage: acc.freeThrowPercentage + game.free_throw_percentage,
-    rebounds: acc.rebounds + game.total_rebounds,
-    assists: acc.assists + game.assists,
-    turnovers: acc.turnovers + game.turnovers,
-    plusMinus: acc.plusMinus + game.plus_minus
-  }), {
-    points: 0,
-    fieldGoalPercentage: 0,
-    threePointPercentage: 0,
-    freeThrowPercentage: 0,
-    rebounds: 0,
-    assists: 0,
-    turnovers: 0,
-    plusMinus: 0
-  });
+  const totals = recentGames.reduce(
+    (acc, game) => ({
+      points: acc.points + game.points,
+      fieldGoalPercentage: acc.fieldGoalPercentage + game.field_goal_percentage,
+      threePointPercentage: acc.threePointPercentage + game.three_point_percentage,
+      freeThrowPercentage: acc.freeThrowPercentage + game.free_throw_percentage,
+      rebounds: acc.rebounds + game.total_rebounds,
+      assists: acc.assists + game.assists,
+      turnovers: acc.turnovers + game.turnovers,
+      plusMinus: acc.plusMinus + game.plus_minus,
+    }),
+    {
+      points: 0,
+      fieldGoalPercentage: 0,
+      threePointPercentage: 0,
+      freeThrowPercentage: 0,
+      rebounds: 0,
+      assists: 0,
+      turnovers: 0,
+      plusMinus: 0,
+    }
+  );
 
   return {
     points: Number((totals.points / recentGames.length).toFixed(1)),
@@ -82,7 +86,7 @@ const calculateStats = (games: TeamGame[], count: number): StatSummary => {
     rebounds: Number((totals.rebounds / recentGames.length).toFixed(1)),
     assists: Number((totals.assists / recentGames.length).toFixed(1)),
     turnovers: Number((totals.turnovers / recentGames.length).toFixed(1)),
-    plusMinus: Number((totals.plusMinus / recentGames.length).toFixed(1))
+    plusMinus: Number((totals.plusMinus / recentGames.length).toFixed(1)),
   };
 };
 
@@ -128,7 +132,9 @@ const StatCard = ({ title, stats }: StatCardProps) => (
         </div>
         <div>
           <p className="text-sm text-gray-500">+/-</p>
-          <p className={`text-2xl font-bold ${stats.plusMinus >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+          <p
+            className={`text-2xl font-bold ${stats.plusMinus >= 0 ? 'text-green-500' : 'text-red-500'}`}
+          >
             {stats.plusMinus > 0 ? `+${stats.plusMinus}` : stats.plusMinus}
           </p>
         </div>
@@ -153,4 +159,4 @@ export const TeamAverageStatsCard = ({ games }: TeamAverageStatsCardProps) => {
       </div>
     </div>
   );
-}; 
+};

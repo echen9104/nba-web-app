@@ -84,7 +84,7 @@ export const getTeamLogoById = (teamId: number) => {
  * @returns The team's logo component or null if not found
  */
 export const getTeamLogoByAbbr = (abbr: string) => {
-    console.log(abbrToLogo[abbr.toUpperCase()])
+  console.log(abbrToLogo[abbr.toUpperCase()]);
   return abbrToLogo[abbr.toUpperCase()] || null;
 };
 
